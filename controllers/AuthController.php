@@ -1,5 +1,4 @@
 <?php
-
 require_once __DIR__ . '/../models/repositories/AdminRepository.php';  
 require_once __DIR__ . '/../models/Admin.php'; 
 
@@ -41,6 +40,7 @@ class AuthController
         // Authentification réussie, stocker les infos dans la session
         $_SESSION['role'] = 'admin'; // Rôle admin
         $_SESSION['user_id'] = $admin->getIdAdmin(); // ID de l'admin
+        $_SESSION['user_name'] = $admin->getNomAdmin(); // nom de l'admin
         
         // Redirection vers la page d'accueil 
         header('Location: ?action=home');
