@@ -6,6 +6,6 @@ require_once __DIR__ . '/controllers/AuthController.php';
 // $clientController = new ClientController();
 
 
- $db=new DatabaseConnection();
- $clients=$db->getConnection()->query('SELECT * FROM  Client')->fetchAll();
- var_dump($clients);
+//  $db=new DatabaseConnection();
+//  $clients=$db->getConnection()->query('SELECT * FROM  Client')->fetchAll();
+//  var_dump($clients);
