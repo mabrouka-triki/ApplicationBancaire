@@ -1,27 +1,75 @@
 <?php
-// AuthController.php
-require_once __DIR__ . '/../models/Admin.php';
-require_once __DIR__ . '/../lib/database.php';
+
+require_once __DIR__ . '/../models/repositories/AdminRepository.php';  
+require_once __DIR__ . '/../models/Admin.php'; 
+
 
 class AuthController
 {
-    public function login(string $email, string $password)
-    {
-        $db = getDbConnection();
-        $stmt = $db->prepare("SELECT * FROM Admin WHERE email_admin = :email");
-        $stmt->bindParam(':email', $email);
-        $stmt->execute();
-        $admin = $stmt->fetch(PDO::FETCH_ASSOC);
+    private AdminRepository $adminRepository;
 
-        if ($admin && password_verify($password, $admin['mdp_admin'])) {
-            $_SESSION['role'] = 'admin';
-            $_SESSION['user_id'] = $admin['id_admin'];
-            $_SESSION['user_email'] = $admin['email_admin'];
-            header("Location: home.php"); // Rediriger vers le tableau de bord
-        } else {
-            echo "Identifiants invalides!";
-        }
+    public function __construct()
+    {
+        $this->adminRepository = new AdminRepository();
+    }
+
+    // Affichage du formulaire de connexion
+    public function login()
+    {
+        require_once __DIR__ . '/../views/login.php';
+    }
+
+    // Traitement de la connexion
+    public function doLogin()
+{
+    // Vérification de la présence de données avant de les utiliser
+    $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);  // Validation de l'email
+    $password = filter_input(INPUT_POST, 'password');
+
+    // Vérification si les variables ne sont pas nulles et que l'email est valide
+    if (!$email || !$password) {
+        $_SESSION['error'] = 'Veuillez remplir tous les champs.';
+        header('Location: ?action=login');
+        exit;
+    }
+
+    // Recherche de l'admin dans la base de données par email
+    $admin = $this->adminRepository->getAdminByEmail($email);
+
+    // Vérification du mot de passe
+    if ($admin && password_verify($password, $admin->getMdpAdmin())) {
+        // Authentification réussie, stocker les infos dans la session
+        $_SESSION['role'] = 'admin'; // Rôle admin
+        $_SESSION['user_id'] = $admin->getIdAdmin(); // ID de l'admin
+        
+        // Redirection vers la page d'accueil 
+        header('Location: ?action=home');
+        exit;
+    } else {
+        // Si l'authentification échoue, redirigez vers la page de connexion avec un message d'erreur
+        $_SESSION['error'] = 'Email ou mot de passe incorrect';
+        header('Location: ?action=login');
+        exit;
     }
 }
 
-?>
+
+    // Page d'accueil (tableau de bord)
+    public function dashboard()
+    {
+        if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+            header('Location: ?action=login');
+            exit;
+        }
+
+        require_once __DIR__ . '/../views/home.php';
+    }
+
+    // Déconnexion
+    public function logout()
+    {
+        session_destroy();
+        header('Location: ?');
+        exit;
+    }
+}

@@ -1,25 +1,20 @@
 <?php require_once __DIR__ . '/templates/header.php'; ?>
 
-<?php
-// Affichage d'un message d'erreur en cas de problème de connexion
-if (isset($_SESSION['error_message'])) {
-    echo '<div class="alert alert-danger">' . $_SESSION['error_message'] . '</div>';
-    unset($_SESSION['error_message']); // Supprimer le message après l'avoir affiché
-}
-?>
+<div class="container mt-5">
+    <h2>Connexion Administrateur</h2>
 
-<form action="login_action.php" method="POST">
-    <div class="form-group">
-        <label for="username">Nom d'utilisateur :</label>
-        <input class="form-control" type="text" name="username" required>
-    </div>
-    <div class="form-group">
-        <label for="password">Mot de passe :</label>
-        <input class="form-control" type="password" name="password" required>
-    </div>
-    <div class="form-group">
-        <button class="btn btn-primary" type="submit">Se connecter</button>
-    </div>
-</form>
+    <?php if (isset($_SESSION['error'])): ?>
+    <div class="alert alert-danger"><?= $_SESSION['error']; unset($_SESSION['error']); ?></div>
+<?php endif; ?>
 
-<?php require_once __DIR__ . '/templates/footer.php'; ?>
+
+    <form action="?action=doLogin" method="post">
+        <label for="email">Email:</label>
+        <input type="email" name="email" id="email" required>
+
+        <label for="password">Mot de passe:</label>
+        <input type="password" name="password" id="password" required>
+
+        <button type="submit">Se connecter</button>
+    </form>
+</div>

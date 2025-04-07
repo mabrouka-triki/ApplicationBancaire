@@ -1,11 +1,24 @@
 <?php
-require_once __DIR__ . '/controllers/ClientController.php';
+session_start();
+// echo password_hash('Mabrouka', PASSWORD_DEFAULT);
+
 require_once __DIR__ . '/controllers/AuthController.php';
 
-// $authController = new AuthController();
-// $clientController = new ClientController();
+$authController = new AuthController();
 
+$action = $_GET['action'] ?? 'login';
 
-//  $db=new DatabaseConnection();
-//  $clients=$db->getConnection()->query('SELECT * FROM  Client')->fetchAll();
-//  var_dump($clients);
+switch ($action) {
+    case 'login':
+        $authController->login();
+        break;
+    case 'doLogin':
+        $authController->doLogin();
+        break;
+    case 'home':
+        $authController->dashboard();
+        break;
+    case 'logout':
+        $authController->logout();
+        break;
+}

@@ -1,9 +1,9 @@
 
 <?php
-require_once __DIR__ . '/../Client.php';
+require_once __DIR__ . '/../Contrat.php';
 require_once __DIR__ . '/../../lib/database.php';
 
-class ClientRepository
+class ContratRepository
 {
     public DatabaseConnection $connection;
 
@@ -15,7 +15,7 @@ class ClientRepository
 
     public function countClients(): int
     {
-        $stmt = $this->db->query("SELECT COUNT(*) FROM Client");
+        $stmt = $this->db->query("SELECT COUNT(*) FROM Contrat");
         return (int) $stmt->fetchColumn();
     }
 }

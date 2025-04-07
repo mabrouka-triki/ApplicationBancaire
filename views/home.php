@@ -1,13 +1,11 @@
 
+<?php require_once __DIR__ . '/templates/header_main.php'; ?>
 
-<?php
-// home.php
-require_once __DIR__ . '/lib/utils.php'; 
+<div class="container mt-5">
+    <h2>Bienvenue dans le tableau de bord !</h2>
+    <p>Bonjour, <?= $_SESSION['user_id'] ?> </p>
 
-// Vérifier si l'utilisateur est connecté et a un rôle d'admin
-isConnected();
-isAdmin(); // Cette fonction va rediriger l'utilisateur si ce n'est pas un admin
+    <a href="?action=logout" class="btn btn-danger">Déconnexion</a>
+</div>
 
-// Code de ton tableau de bord
-echo "Bienvenue sur votre tableau de bord d'administration!";
-?>
+

@@ -1,52 +1,34 @@
-
 <?php
-// Admin.php
+
 class Admin
 {
-    private int $id;
-    private string $nom;
-    private string $email;
-    private string $mdp;
+    private $idAdmin;
+    private $nomAdmin;
+    private $emailAdmin;
+    private $mdpAdmin;
 
-    // Getters
-    public function getId(): int
+    public function __construct($idAdmin, $nomAdmin, $emailAdmin, $mdpAdmin)
     {
-        return $this->id;
+        $this->idAdmin = $idAdmin;
+        $this->nomAdmin = $nomAdmin;
+        $this->emailAdmin = $emailAdmin;
+        $this->mdpAdmin = $mdpAdmin;
     }
 
-    public function getNom(): string
-    {
-        return $this->nom;
+    public function getIdAdmin() {
+        return $this->idAdmin;
     }
 
-    public function getEmail(): string
-    {
-        return $this->email;
+    public function getNomAdmin() {
+        return $this->nomAdmin;
     }
 
-    public function getMdp(): string
-    {
-        return $this->mdp;
+    public function getEmailAdmin() {
+        return $this->emailAdmin;
     }
 
-    // Setters
-    public function setId(int $id): void
-    {
-        $this->id = $id;
-    }
-
-    public function setNom(string $nom): void
-    {
-        $this->nom = htmlspecialchars($nom);
-    }
-
-    public function setEmail(string $email): void
-    {
-        $this->email = htmlspecialchars($email);
-    }
-
-    public function setMdp(string $mdp): void
-    {
-        $this->mdp = password_hash($mdp, PASSWORD_BCRYPT); // Hashage du mot de passe
+    public function getMdpAdmin() {
+        return $this->mdpAdmin;
     }
 }
+?>

@@ -1,6 +1,5 @@
 
 <?php
-// Compte.php
 class Compte
 {
     private int $id;
