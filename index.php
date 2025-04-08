@@ -30,6 +30,13 @@ switch ($action) {
             case 'clients':
                 $clientController->show();
                 break;
+        
+            case 'create':
+                $clientController->create();
+                 break;
+             case 'store':
+                $clientController->store();
+                break;
             
 
 

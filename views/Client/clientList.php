@@ -25,6 +25,7 @@
                     <td>
                         <a href="?action=editClients&id=<?= $client->getId() ?>" class="btn btn-warning btn-sm">Modifier</a>
                         <a href="?action=deleteClients&id=<?= $client->getId() ?>" class="btn btn-danger btn-sm" onclick="return confirm('Êtes-vous sûr ?')">Supprimer</a>
+                        <a href="?action=voirDossier&id=<?= $client->getId() ?>" class="btn btn-info btn-sm">Voir dossier</a>
                     </td>
                 </tr>
             <?php endforeach; ?>

@@ -3,7 +3,7 @@
 
 <div class="container mt-5">
     <h2>Bienvenue dans le tableau de bord !</h2>
-    <p>Bonjour, <?= $_SESSION['user_name'] ?> </p>
+    <p>Bienvenue, <?= htmlspecialchars($_SESSION['user_name'], ENT_QUOTES, 'UTF-8') ?></p>
   
     <table class="table table-bordered text-center align-middle">
     <thead class="table-dark">

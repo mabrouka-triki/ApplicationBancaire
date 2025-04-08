@@ -19,7 +19,9 @@ class ClientRepository
         $result = $stmt->fetch();
         return (int) $result['total'];
     }
+ 
 
+    // affichage de clients 
     public function getClient(int $id): ?Client
     {
         $statement = $this->connection->getConnection()->prepare("SELECT * FROM Client WHERE id=:id");
@@ -57,6 +59,21 @@ class ClientRepository
         }
     
         return $clients;
+    }
+    // ajouter un client 
+    public function create(Client $client): bool
+    {
+        $statement = $this->connection
+            ->getConnection()
+            ->prepare('INSERT INTO Client (nom_client, prenom_client, email_client, telephone_client) 
+                       VALUES (:nom_client, :prenom_client, :email_client, :telephone_client)');
+    
+        return $statement->execute([
+            'nom_client' => $client->getNom(),
+            'prenom_client' => $client->getPrenom(),
+            'email_client' => $client->getEmail(),
+            'telephone_client' => $client->getTelephone()
+        ]);
     }
     
 
