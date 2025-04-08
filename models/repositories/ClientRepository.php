@@ -1,10 +1,10 @@
-
 <?php
 require_once __DIR__ . '/../Client.php';
 require_once __DIR__ . '/../../lib/database.php';
 
 class ClientRepository
 {
+    private TaskRepository $taskRepository;
     public DatabaseConnection $connection;
 
     public function __construct()
@@ -12,12 +12,52 @@ class ClientRepository
         $this->connection = new DatabaseConnection();
     }
 
-
     public function countClients(): int
     {
-        $stmt = $this->db->query("SELECT COUNT(*) FROM Client");
-        return (int) $stmt->fetchColumn();
+        $stmt = $this->connection->getConnection()->prepare("SELECT COUNT(*) AS total FROM Client");
+        $stmt->execute();
+        $result = $stmt->fetch();
+        return (int) $result['total'];
     }
+
+    public function getClient(int $id): ?Client
+    {
+        $statement = $this->connection->getConnection()->prepare("SELECT * FROM Client WHERE id=:id");
+        $statement->execute(['id' => $id]);
+        $result = $statement->fetch();
+
+        if (!$result) {
+            return null;
+        }
+
+        $client = new Client();
+        $client->setId($result['id_client']);
+        $client->setNom($result['nom']);
+        $client->setPrenom($result['prenom']);
+        $client->setEmail($result['email']);
+        $client->setTelephone($result['telephone']);
+
+        return $client;
+    }
+
+    public function getAllClients(): array
+    {
+        $stmt = $this->connection->getConnection()->prepare("SELECT * FROM Client");
+        $stmt->execute();
+        $clients = [];
+    
+        while ($row = $stmt->fetch()) {
+            $client = new Client();
+            $client->setId($row['id_client']);
+            $client->setNom($row['nom_client']);
+            $client->setPrenom($row['prenom_client']);
+            $client->setEmail($row['email_client']);
+            $client->setTelephone($row['telephone_client']);
+            $clients[] = $client;
+        }
+    
+        return $clients;
+    }
+    
+
 }
-
-

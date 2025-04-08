@@ -1,10 +1,12 @@
 <?php
 session_start();
+require_once __DIR__ . '/controllers/AuthController.php';
+require_once __DIR__ . '/controllers/ClientController.php';
+
 // echo password_hash('Mabrouka', PASSWORD_DEFAULT);
 
-require_once __DIR__ . '/controllers/AuthController.php';
-
 $authController = new AuthController();
+$clientController = new clientController();
 
 $action = $_GET['action'] ?? 'login';
 
@@ -21,4 +23,14 @@ switch ($action) {
     case 'logout':
         $authController->logout();
         break;
+        case 'logout':
+            $authController->logout();
+            break;
+
+            case 'clients':
+                $clientController->show();
+                break;
+            
+
+
 }
