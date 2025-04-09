@@ -2,11 +2,13 @@
 session_start();
 require_once __DIR__ . '/controllers/AuthController.php';
 require_once __DIR__ . '/controllers/ClientController.php';
+require_once __DIR__ . '/controllers/CompteController.php';
 
 // echo password_hash('Mabrouka', PASSWORD_DEFAULT);
 
 $authController = new AuthController();
 $clientController = new clientController();
+$compteController = new CompteController();
 
 $action = $_GET['action'] ?? 'login';
 
@@ -55,6 +57,10 @@ switch ($action) {
                     $clientController->delete($id);
                 }
                 break;
+
+                case 'comptes':
+                    $compteController->show();
+                   break;
             default:
                 // Si l'action n'est pas reconnue, rediriger vers la page d'accueil ou une page d'erreur
                 echo "Action inconnue";
