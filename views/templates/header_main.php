@@ -23,7 +23,7 @@
                         <a class="nav-link" href="?action=create">⊕ Nouveau client </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="?action=create">⊕ Nouveau compte </a>
+                        <a class="nav-link" href="?action=addCompte">⊕ Nouveau compte </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="?action=create">⊕ Nouveau contrat </a>

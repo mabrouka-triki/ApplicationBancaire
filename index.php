@@ -61,7 +61,15 @@ switch ($action) {
                 case 'comptes':
                     $compteController->show();
                    break;
-            default:
+
+                   case 'addCompte':
+                    $compteController->addCompte();  // Afficher le formulaire pour ajouter un compte
+                    break;
+                case 'storeCompte':
+                    $compteController->storeCompte();  // Enregistrer le compte après soumission du formulaire
+                    break;
+
+              default:
                 // Si l'action n'est pas reconnue, rediriger vers la page d'accueil ou une page d'erreur
                 echo "Action inconnue";
                 break;

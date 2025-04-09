@@ -50,5 +50,22 @@ class CompteRepository
     return $comptes;
 }
 
+public function saveCompte(Compte $compte)
+    {
+        // Préparer la requête SQL pour insérer le compte
+        $stmt = $this->connection->getConnection()->prepare("
+            INSERT INTO Compte (RIB, type_compte, solde_intial, id_client)
+            VALUES (:RIB, :type_compte, :solde_intial, :id_client)
+        ");
+
+        // Exécuter la requête avec les données du compte
+        $stmt->execute([
+            ':RIB' => $compte->getRIB(),
+            ':type_compte' => $compte->getType(),
+            ':solde_intial' => $compte->getSolde(),
+            ':id_client' => $compte->getIdClient()
+        ]);
+    }
+
     
 }
