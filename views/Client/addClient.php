@@ -19,6 +19,12 @@
         <label for="telephone" class="form-label">Téléphone :</label>
         <input type="text" class="form-control" id="telephone" name="telephone_client" required>
     </div>
+
+    <div class="mb-3">
+        <label for="adresse" class="form-label">Adresse  :</label>
+        <input type="text" class="form-control" id="adresse" name="adresse" required>
+    </div>
+
     <button type="submit" class="btn btn-primary">Ajouter</button>
 </form>
 

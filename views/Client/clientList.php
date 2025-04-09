@@ -11,7 +11,9 @@
                 <th>Prénom</th>
                 <th>Email</th>
                 <th>Téléphone</th>
+                <th>Adresse</th>
                 <th>Actions</th>
+
             </tr>
         </thead>
         <tbody>
@@ -22,6 +24,7 @@
                     <td><?= $client->getPrenom() ?></td>
                     <td><?= $client->getEmail() ?></td>
                     <td><?= $client->getTelephone() ?></td>
+                    <td><?= $client->getAdresse() ?></td>
                     <td>
                         <a href="?action=editClients&id=<?= $client->getId() ?>" class="btn btn-warning btn-sm">Modifier</a>
                         <a href="?action=deleteClients&id=<?= $client->getId() ?>" class="btn btn-danger btn-sm" onclick="return confirm('Êtes-vous sûr ?')">Supprimer</a>

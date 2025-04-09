@@ -24,19 +24,29 @@ switch ($action) {
         $authController->logout();
         break;
         case 'logout':
-            $authController->logout();
-            break;
+        $authController->logout();
+        break;
 
-            case 'clients':
-                $clientController->show();
-                break;
+        case 'clients':
+         $clientController->show();
+        break;
         
-            case 'create':
-                $clientController->create();
-                 break;
-             case 'store':
-                $clientController->store();
-                break;
+        case 'create':
+        $clientController->create();
+        break;
+        case 'store':
+        $clientController->store();
+         break;
+
+         case 'editClients':
+            if (isset($_GET['id'])) {
+                $clientController->edit((int) $_GET['id']);
+            } 
+            break;
+        
+        case 'update':
+            $clientController->update();
+            break;
             
 
 

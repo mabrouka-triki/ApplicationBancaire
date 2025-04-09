@@ -10,6 +10,9 @@ class Client
     private string $email;
 
     private string $telephone;
+    //Pour éviter des erreurs fatales si la base de données retourne NULL
+    private ?string $adresse = null;
+
 
     // Getters
     public function getId(): int
@@ -38,6 +41,11 @@ class Client
     {
         return $this->telephone;
     }
+    public function getAdresse(): string
+    {
+        return $this->adresse;
+    }
+
 
     // Setters
     public function setId(int $id): void
@@ -66,4 +74,12 @@ class Client
     {
         $this->telephone = htmlspecialchars($telephone);
     }
+   
+    public function setAdresse(?string $adresse): void
+{
+    $this->adresse = $adresse ? htmlspecialchars($adresse) : '';
+}
+
+      
+    
 }

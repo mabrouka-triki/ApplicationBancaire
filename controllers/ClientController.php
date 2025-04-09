@@ -39,13 +39,15 @@ class ClientController
             $nom = htmlspecialchars($_POST['nom_client'], ENT_QUOTES, 'UTF-8');
             $prenom = htmlspecialchars($_POST['prenom_client'], ENT_QUOTES, 'UTF-8');
             $telephone = htmlspecialchars($_POST['telephone_client'], ENT_QUOTES, 'UTF-8');
-    
+            $adresse = htmlspecialchars($_POST['adresse'], ENT_QUOTES, 'UTF-8');
             // Créer un client
             $client = new Client();
             $client->setNom($nom);
             $client->setPrenom($prenom);
             $client->setEmail($email);
             $client->setTelephone($telephone);
+            $client->setAdresse($adresse);
+
     
             // Sauvegarder le client
             $this->clientRepository->create($client);
@@ -58,6 +60,37 @@ class ClientController
             header('Location: ?action=create');
             exit();
         }
+    }
+
+  public function edit(int $id)
+{
+    $client = $this->clientRepository->getClient($id);
+    require_once __DIR__ . '/../views/Client/updateClient.php';
+}
+
+
+    public function update()
+    {
+        $id = $_POST['id_client'] ?? null;
+        $nom = $_POST['nom_client'] ?? '';
+        $prenom = $_POST['prenom_client'] ?? '';
+        $email = $_POST['email_client'] ?? '';
+        $telephone = $_POST['telephone_client'] ?? '';
+        $adresse = $_POST['adresse'] ?? '';
+        if ($id && $nom && $prenom && $email && $telephone) {
+            $client = new Client();
+            $client->setId($id);
+            $client->setNom($nom);
+            $client->setPrenom($prenom);
+            $client->setEmail($email);
+            $client->setTelephone($telephone);
+            $client->setAdresse($adresse);
+
+            $this->clientRepository->update($client);
+        }
+    
+        header('Location: ?action=clients');        
+        exit;
     }
       
     }
