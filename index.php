@@ -68,6 +68,10 @@ switch ($action) {
                 case 'storeCompte':
                     $compteController->storeCompte();  // Enregistrer le compte après soumission du formulaire
                     break;
+                    
+                    case 'deleteCompte':
+                        $compteController->deleteCompte();
+                        break;
 
               default:
                 // Si l'action n'est pas reconnue, rediriger vers la page d'accueil ou une page d'erreur

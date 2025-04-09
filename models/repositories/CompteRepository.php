@@ -67,5 +67,29 @@ public function saveCompte(Compte $compte)
         ]);
     }
 
-    
+    public function update(Compte $compte): bool
+    {
+        $stmt = $this->connection
+            ->getConnection()
+            ->prepare('UPDATE Compte 
+                       SET RIB = :RIB, type_compte = :type_compte, solde_intial = :solde_intial, id_client = :id_client
+                       WHERE id_compte = :id'); 
+        
+        return $stmt->execute([
+            ':RIB' => $compte->getRIB(),
+            ':type_compte' => $compte->getType(),
+            ':solde_intial' => $compte->getSolde(),
+            ':id_client' => $compte->getIdClient(),
+            ':id' => $compte->getId() 
+        ]);
+    }
+    public function delete(int $id): bool
+{
+    $stmt = $this->connection
+        ->getConnection()
+        ->prepare('DELETE FROM Compte WHERE id_compte = :id');
+
+    return $stmt->execute([':id' => $id]);
 }
+
+}    

@@ -59,7 +59,7 @@ class CompteController {
         if ($RIB === null || $type === null || $idClient === null) {
             $_SESSION['error'] = "Les valeurs RIB, Type de compte et Client associé sont obligatoires.";
             header('Location: ?action=addCompte');
-            exit;
+            exit;// Vous devez mettre la condition sur id_compte et non id_client
         }
 
         // Envoi des données à l'objet Compte
@@ -76,5 +76,31 @@ class CompteController {
         header('Location: ?action=comptes');
         exit;
     }
+
+    public function deleteCompte() {
+        if (isset($_GET['id'])) {
+            $id = (int) $_GET['id']; // Récupérer l'ID du compte à supprimer
+    
+            // Appel à la méthode de suppression du repository
+            $success = $this->compteRepository->delete($id);
+    
+            if ($success) {
+                $_SESSION['success'] = "Compte supprimé avec succès.";
+            } else {
+                $_SESSION['error'] = "Une erreur est survenue lors de la suppression du compte.";
+            }
+    
+            // Rediriger vers la page des comptes après la suppression
+            header('Location: ?action=comptes');
+            exit;
+        } else {
+            $_SESSION['error'] = "Aucun compte à supprimer.";
+            header('Location: ?action=comptes');
+            exit;
+        }
+    }
+    
+
 }
+
 ?>
