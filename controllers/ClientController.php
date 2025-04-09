@@ -92,6 +92,25 @@ class ClientController
         header('Location: ?action=clients');        
         exit;
     }
+
+ 
+    public function delete(int $id)
+    {
+        if ($this->clientRepository->hasAssociatedAccountsOrContracts($id)) {
+            $_SESSION['error'] = 'Ce client ne peut pas être supprimé car il possède des comptes ou des contrats associés.';
+        } else {
+            if ($this->clientRepository->delete($id)) {
+                $_SESSION['success'] = 'Client supprimé avec succès.';
+            } else {
+                $_SESSION['error'] = 'Une erreur s\'est produite lors de la suppression du client.';
+            }
+        }
+    
+        header('Location: ?action=clients');
+        exit;
+    }
+    
+
       
     }
 

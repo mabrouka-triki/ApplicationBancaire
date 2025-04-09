@@ -103,7 +103,35 @@ class ClientRepository
         ]);
     }
     
+    // Méthode pour vérifier si un client a des comptes ou contrats associés
+    public function hasAssociatedAccountsOrContracts(int $clientId): bool
+    {
+        // Vérifier s'il existe des comptes associés
+        $stmt = $this->connection->getConnection()->prepare("SELECT COUNT(*) FROM Compte WHERE id_client = :id_client");
+        $stmt->execute(['id_client' => $clientId]);
+        $accountCount = $stmt->fetchColumn();
 
+        // Vérifier s'il existe des contrats associés
+        $stmt = $this->connection->getConnection()->prepare("SELECT COUNT(*) FROM Contrat WHERE id_client = :id_client");
+        $stmt->execute(['id_client' => $clientId]);
+        $contractCount = $stmt->fetchColumn();
+
+        // Retourner true si des comptes ou contrats existent
+        return $accountCount > 0 || $contractCount > 0;
+    }
+
+    // Méthode pour supprimer un client
+    public function delete(int $clientId): bool
+    {
+        // Vérifier s'il a des comptes ou contrats associés
+        if ($this->hasAssociatedAccountsOrContracts($clientId)) {
+            return false; // Le client ne peut pas être supprimé
+        }
+
+        // Supprimer le client si aucun compte ou contrat associé
+        $stmt = $this->connection->getConnection()->prepare("DELETE FROM Client WHERE id_client = :id_client");
+        return $stmt->execute(['id_client' => $clientId]);
+    }
     
     
 

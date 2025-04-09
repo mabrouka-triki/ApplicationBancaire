@@ -16,12 +16,14 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                  
+                <li class="nav-item">
+                        <a class="nav-link" href="?action=home"> Accueil </a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="?action=create">⊕ Nouveau client </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="?action=create">⊕ Nouvelle compte </a>
+                        <a class="nav-link" href="?action=create">⊕ Nouveau compte </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="?action=create">⊕ Nouveau contrat </a>

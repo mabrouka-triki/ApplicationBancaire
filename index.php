@@ -48,6 +48,16 @@ switch ($action) {
             $clientController->update();
             break;
             
-
+            case 'deleteClients':
+                // Vérifie que l'URL contient bien l'ID du client
+                if (isset($_GET['id'])) {
+                    $id = $_GET['id'];
+                    $clientController->delete($id);
+                }
+                break;
+            default:
+                // Si l'action n'est pas reconnue, rediriger vers la page d'accueil ou une page d'erreur
+                echo "Action inconnue";
+                break;
 
 }

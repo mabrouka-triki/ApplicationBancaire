@@ -1,5 +1,21 @@
 <?php require_once __DIR__ . '/../templates/header_main.php'; ?>
 
+<!-- Affichage du message de succès si défini -->
+<?php if (isset($_SESSION['success'])): ?>
+    <div class="alert alert-success">
+        <?php echo $_SESSION['success']; ?>
+        <?php unset($_SESSION['success']); ?>
+    </div>
+<?php endif; ?>
+
+<!-- Affichage du message d'erreur si défini -->
+<?php if (isset($_SESSION['error'])): ?>
+    <div class="alert alert-danger">
+        <?php echo $_SESSION['error']; ?>
+        <?php unset($_SESSION['error']); ?>
+    </div>
+<?php endif; ?>
+
 <div class="container mt-5">
     <h2>Liste des clients</h2>
 
@@ -13,7 +29,6 @@
                 <th>Téléphone</th>
                 <th>Adresse</th>
                 <th>Actions</th>
-
             </tr>
         </thead>
         <tbody>
@@ -27,7 +42,7 @@
                     <td><?= $client->getAdresse() ?></td>
                     <td>
                         <a href="?action=editClients&id=<?= $client->getId() ?>" class="btn btn-warning btn-sm">Modifier</a>
-                        <a href="?action=deleteClients&id=<?= $client->getId() ?>" class="btn btn-danger btn-sm" onclick="return confirm('Êtes-vous sûr ?')">Supprimer</a>
+                        <a href="?action=deleteClients&id=<?= $client->getId() ?>" class="btn btn-danger btn-sm" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce client ?')">Supprimer</a>
                         <a href="?action=voirDossier&id=<?= $client->getId() ?>" class="btn btn-info btn-sm">Voir dossier</a>
                     </td>
                 </tr>
