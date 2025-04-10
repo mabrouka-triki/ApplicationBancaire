@@ -77,6 +77,40 @@ class CompteController {
         exit;
     }
 
+
+  // Affiche le formulaire de modification du compte
+public function editCompte(int $id)
+{
+    $compte = $this->compteRepository->getCompteById($id);
+    require_once __DIR__ . '/../views/Compte/updateCompte.php';
+}
+
+
+// Traite la mise à jour du compte
+public function updateCompte()
+{
+    $id = $_POST['id_compte'] ?? null;
+    $type = $_POST['type_compte'] ?? '';
+    $solde = $_POST['solde_intial'] ?? null;
+
+    if ($id && $type !== '' && $solde !== null) {
+        $compte = new Compte();
+        $compte->setId($id);
+        $compte->setType($type);
+        $compte->setSolde($solde);
+
+        $this->compteRepository->update($compte);
+
+        $_SESSION['success'] = "Compte modifié avec succès.";
+    } else {
+        $_SESSION['error'] = "Tous les champs sont obligatoires.";
+    }
+
+    header('Location: ?action=comptes');
+    exit;
+}
+
+    
     public function deleteCompte() {
         if (isset($_GET['id'])) {
             $id = (int) $_GET['id']; // Récupérer l'ID du compte à supprimer

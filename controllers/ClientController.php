@@ -27,7 +27,7 @@ class ClientController
     public function store()
     {
         if (isset($_POST['nom_client'], $_POST['prenom_client'], $_POST['email_client'], $_POST['telephone_client'])) {
-            // Validation des données
+            // Validation de l'email
             $email = filter_input(INPUT_POST, 'email_client', FILTER_VALIDATE_EMAIL);
             if (!$email) {
                 $_SESSION['error'] = "L'email n'est pas valide.";
@@ -35,32 +35,35 @@ class ClientController
                 exit();
             }
     
-            // Assainir les données
+            // Assainir les données obligatoires
             $nom = htmlspecialchars($_POST['nom_client'], ENT_QUOTES, 'UTF-8');
             $prenom = htmlspecialchars($_POST['prenom_client'], ENT_QUOTES, 'UTF-8');
             $telephone = htmlspecialchars($_POST['telephone_client'], ENT_QUOTES, 'UTF-8');
-            $adresse = htmlspecialchars($_POST['adresse'], ENT_QUOTES, 'UTF-8');
+    
+            // L'adresse peut être vide
+            $adresse = isset($_POST['adresse']) ? htmlspecialchars($_POST['adresse'], ENT_QUOTES, 'UTF-8') : '';
+    
             // Créer un client
             $client = new Client();
             $client->setNom($nom);
             $client->setPrenom($prenom);
             $client->setEmail($email);
             $client->setTelephone($telephone);
-            $client->setAdresse($adresse);
-
+            $client->setAdresse($adresse); // même si vide, c’est ok
     
             // Sauvegarder le client
             $this->clientRepository->create($client);
     
-            // Rediriger
-            header('Location: ?action=create');
+            $_SESSION['success'] = "Client ajouté avec succès.";
+            header('Location: ?action=clients'); // rediriger vers la liste ?
             exit();
         } else {
-            $_SESSION['error'] = "Veuillez remplir tous les champs.";
+            $_SESSION['error'] = "Veuillez remplir tous les champs obligatoires.";
             header('Location: ?action=create');
             exit();
         }
     }
+    
 
   public function edit(int $id)
 {

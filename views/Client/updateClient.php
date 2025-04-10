@@ -24,9 +24,11 @@
     </div>
 
     <div class="mb-3">
-    <label for="adresse" class="form-label">Adresse :</label>
-    <input type="text" class="form-control" id="adresse" name="adresse" value="<?= $client->getAdresse() ?>" required>
+        
+    <label for="adresse" class="form-label">Adresse <span class="text-muted">(facultatif)</span> :</label>
+    <input type="text" class="form-control" id="adresse" name="adresse">
 </div>
+
 
 
     <button type="submit" class="btn btn-primary">Modifier
