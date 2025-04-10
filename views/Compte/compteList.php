@@ -44,6 +44,7 @@
                         <td>
                             <a href="?action=editCompte&id=<?= $compte->getId(); ?>" class="btn btn-warning btn-sm">Modifier</a>
                             <a href="?action=deleteCompte&id=<?= $compte->getId(); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Supprimer ce compte ?')">Supprimer</a>
+                            <a href="?action=detailCompte&id=<?= $compte->getId(); ?>" class="btn btn-info btn-sm">Voir</a>
 
                         </td>
                     </tr>

@@ -22,7 +22,14 @@ class CompteController {
         $comptes = $this->compteRepository->getAllComptes();
         require_once __DIR__ . '/../views/Compte/compteList.php';
     }
+  // plus en details
 
+
+  public function showCompte(int $id)
+    {
+    $compte = $this->compteRepository->getCompteById($id);
+    require_once __DIR__ . '/../views/Compte/VoirCompte.php';
+    }
     // Affichage du formulaire pour ajouter un compte
     public function addCompte() {
         // Récupérer tous les clients existants pour les afficher dans le formulaire

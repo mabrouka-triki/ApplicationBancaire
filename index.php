@@ -26,12 +26,19 @@ switch ($action) {
         break;
 
     // Gestion des clients
+
     case 'clients':
         $clientController->show();
         break;
     case 'create':
         $clientController->create();
         break;
+        case 'detailClient':
+            if (isset($_GET['id'])) {
+                $clientController->showClient((int)$_GET['id']);
+            }
+            break;
+        
     case 'store':
         $clientController->store();
         break;
@@ -49,13 +56,20 @@ switch ($action) {
         }
         break;
 
+
     // Gestion des comptes
     case 'comptes':
         $compteController->show();
         break;
+           
     case 'addCompte':
         $compteController->addCompte();  // Afficher le formulaire pour ajouter un compte
         break;
+        case 'detailCompte':
+            if (isset($_GET['id'])) {
+                $compteController->showCompte((int)$_GET['id']);
+            }
+            break;
     case 'storeCompte':
         $compteController->storeCompte();  // Enregistrer le compte après soumission du formulaire
         break;

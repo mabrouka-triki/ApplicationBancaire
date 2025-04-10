@@ -18,6 +18,14 @@ class ClientController
 
         require_once __DIR__ . '/../views/Client/clientList.php';
     }
+    // plus en detail 
+
+    public function showClient(int $id)
+    {
+    $client = $this->clientRepository->getClient($id);
+    require_once __DIR__ . '/../views/Client/VoirClient.php';
+    }
+
     public function create()
     {  
             $client = new Client();
