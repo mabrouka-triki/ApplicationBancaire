@@ -102,37 +102,70 @@ class ClientRepository
             'id' => $client->getId()
         ]);
     }
+
     
-    // Méthode pour vérifier si un client a des comptes ou contrats associés
-    public function hasAssociatedAccountsOrContracts(int $clientId): bool
-    {
-        // Vérifier s'il existe des comptes associés
-        $stmt = $this->connection->getConnection()->prepare("SELECT COUNT(*) FROM Compte WHERE id_client = :id_client");
-        $stmt->execute(['id_client' => $clientId]);
-        $accountCount = $stmt->fetchColumn();
-
-        // Vérifier s'il existe des contrats associés
-        $stmt = $this->connection->getConnection()->prepare("SELECT COUNT(*) FROM Contrat WHERE id_client = :id_client");
-        $stmt->execute(['id_client' => $clientId]);
-        $contractCount = $stmt->fetchColumn();
-
-        // Retourner true si des comptes ou contrats existent
-        return $accountCount > 0 || $contractCount > 0;
-    }
-
-    // Méthode pour supprimer un client
     public function delete(int $clientId): bool
-    {
-        // Vérifier s'il a des comptes ou contrats associés
-        if ($this->hasAssociatedAccountsOrContracts($clientId)) {
-            return false; // Le client ne peut pas être supprimé
-        }
+{
+    // Supprimer les comptes et contrats associés
+    $this->deleteAssociatedData($clientId);
 
-        // Supprimer le client si aucun compte ou contrat associé
-        $stmt = $this->connection->getConnection()->prepare("DELETE FROM Client WHERE id_client = :id_client");
-        return $stmt->execute(['id_client' => $clientId]);
-    }
+    // Supprimer le client
+    $stmt = $this->connection->getConnection()->prepare("DELETE FROM Client WHERE id_client = :id_client");
     
+    // Vérifier si la requête a bien été exécutée
+    if ($stmt->execute(['id_client' => $clientId])) {
+        return true;
+    } else {
+        // Si l'exécution échoue, loguer l'erreur
+        error_log("Erreur lors de la suppression du client avec ID : $clientId");
+        return false;
+    }
+}
+   // Méthode pour vérifier si un client a des comptes ou contrats associés
+   public function hasAssociatedAccountsOrContracts(int $clientId): bool
+   {
+       // Vérifier s'il existe des comptes associés
+       $stmt = $this->connection->getConnection()->prepare("SELECT COUNT(*) FROM Compte WHERE id_client = :id_client");
+       $stmt->execute(['id_client' => $clientId]);
+       $accountCount = $stmt->fetchColumn();
+
+       // Vérifier s'il existe des contrats associés
+       $stmt = $this->connection->getConnection()->prepare("SELECT COUNT(*) FROM Contrat WHERE id_client = :id_client");
+       $stmt->execute(['id_client' => $clientId]);
+       $contractCount = $stmt->fetchColumn();
+
+       // Retourner true si des comptes ou contrats existent
+       return $accountCount > 0 || $contractCount > 0;
+   }
+
+
+// Méthode pour supprimer les données associées (comptes et contrats)
+private function deleteAssociatedData(int $clientId)
+{
+    // Supprimer les comptes associés
+    if (!$this->deleteData('Compte', $clientId)) {
+        error_log("Erreur lors de la suppression des comptes associés au client avec ID : $clientId");
+    }
+
+    // Supprimer les contrats associés
+    if (!$this->deleteData('Contrat', $clientId)) {
+        error_log("Erreur lors de la suppression des contrats associés au client avec ID : $clientId");
+    }
+}
+
+// Méthode générique pour supprimer des données dans n'importe quelle table
+private function deleteData(string $table, int $clientId)
+{
+    $stmt = $this->connection->getConnection()->prepare("DELETE FROM $table WHERE id_client = :id_client");
+    if ($stmt->execute(['id_client' => $clientId])) {
+        return true;
+    } else {
+        // Loguer l'erreur si la suppression échoue
+        error_log("Erreur lors de la suppression dans la table $table pour le client avec ID : $clientId");
+        return false;
+    }
+}
+
     
 
 }

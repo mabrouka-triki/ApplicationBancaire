@@ -66,40 +66,58 @@ public function saveCompte(Compte $compte)
             ':id_client' => $compte->getIdClient()
         ]);
     }
- 
     public function getCompteById(int $id): ?Compte
+    {
+        $stmt = $this->connection->getConnection()
+            ->prepare("SELECT * FROM Compte WHERE id_compte = :id");
+        $stmt->execute([':id' => $id]);
+    
+        $data = $stmt->fetch();
+    
+        if ($data) {
+            $compte = new Compte();
+            $compte->setId($data['id_compte']);
+            $compte->setType($data['type_compte']);
+            $compte->setSolde($data['solde_intial']);
+            $compte->setIdClient($data['id_client']);
+    
+            $client = $this->getClientById($data['id_client']);
+            if ($client) {
+                $compte->setNom($client['nom_client']);
+                $compte->setPrenom($client['prenom_client']);
+            }
+    
+            return $compte;
+        }
+    
+        return null;
+    }
+    public function getClientById(int $id): ?array
 {
     $stmt = $this->connection->getConnection()
-        ->prepare("SELECT * FROM Compte WHERE id_compte = :id");
+        ->prepare("SELECT nom_client, prenom_client FROM Client WHERE id_client = :id");
     $stmt->execute([':id' => $id]);
 
-    $data = $stmt->fetch();
-    if ($data) {
-        $compte = new Compte();
-        $compte->setId($data['id_compte']);
-        $compte->setType($data['type_compte']);
-        $compte->setSolde($data['solde_intial']);
-        return $compte;
-    }
-    return null;
+    $client = $stmt->fetch();
+    return $client ?: null;
 }
 
-
+    
     public function update(Compte $compte): bool
-{
-    $stmt = $this->connection
-        ->getConnection()
-        ->prepare('UPDATE Compte 
-                   SET type_compte = :type, solde_intial = :solde 
-                   WHERE id_compte = :id');
-
-    return $stmt->execute([
-        ':type' => $compte->getType(),
-        ':solde' => $compte->getSolde(),
-        ':id' => $compte->getId()
-    ]);
-}
-
+    {
+        $stmt = $this->connection->getConnection()->prepare(
+            'UPDATE Compte 
+            SET type_compte = :type_compte, solde_intial = :solde_intial
+            WHERE id_compte = :id_compte'
+        );
+    
+        return $stmt->execute([
+            ':type_compte' => $compte->getType(),
+            ':solde_intial' => $compte->getSolde(),
+            ':id_compte' => $compte->getId()
+        ]);
+    }
+    
     public function delete(int $id): bool
 {
     $stmt = $this->connection

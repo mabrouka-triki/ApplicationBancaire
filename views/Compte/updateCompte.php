@@ -6,6 +6,14 @@
     <input type="hidden" name="id_compte" value="<?= $compte->getId(); ?>">
 
     <div class="mb-3">
+        <p> Nom de client :<?= htmlspecialchars($compte->getNom()); ?></p>  
+    </div>
+
+    <div class="mb-3">
+        <p>Prénom de client :<?= htmlspecialchars($compte->getPrenom()); ?></p> 
+    </div>
+
+    <div class="mb-3">
         <label for="type_compte" class="form-label">Type de compte</label>
         <select class="form-select" id="type_compte" name="type_compte" required>
             <option value="compte_courant" <?= $compte->getType() == 'compte_courant' ? 'selected' : ''; ?>>Compte courant</option>
@@ -20,4 +28,3 @@
 
     <button type="submit" class="btn btn-primary">Modifier</button>
 </form>
-

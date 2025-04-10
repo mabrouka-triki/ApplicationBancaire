@@ -1,41 +1,41 @@
-
 <?php require_once __DIR__ . '/templates/header_main.php'; ?>
 
 <div class="container mt-5">
-    <h2>Bienvenue dans le tableau de bord !</h2>
-    <p>Bienvenue, <?= htmlspecialchars($_SESSION['user_name'], ENT_QUOTES, 'UTF-8') ?></p>
+    <h2 class="text-center mb-4">Bienvenue dans le tableau de bord !</h2>
+    <p class="text-center">Bienvenue, <?= htmlspecialchars($_SESSION['user_name'], ENT_QUOTES, 'UTF-8') ?></p>
   
-    <table class="table table-bordered text-center align-middle">
-    <thead class="table-dark">
-        <tr>
-            <th>📋 Description</th>
-            <th>📊 Total</th>
-            <th>🔗 Accès rapide</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>Nombre total de clients enregistrés</td>
-            <td><strong><?= $totalClients ?></strong></td>
-            <td><a href="?action=clients&id? $client->getId()?> "class= "btn btn-primary btn-sm">Voir les clients</a></td>
-            </tr>          
-        <tr>
-            <td>Nombre total de comptes ouverts</td>
-            <td><strong><?= $totalComptes ?></strong></td>
-            <td><a href="?action=comptes" class="btn btn-success btn-sm">Voir les comptes</a></td>
-        </tr>
-        <tr>
-            <td>Nombre total de contrats souscrits</td>
-            <td><strong><?= $totalContrats ?></strong></td>
-            <td><a href="?action=contrats" class="btn btn-warning btn-sm">Voir les contrats</a></td>
-        </tr>
-    </tbody>
-</table>
+    <div class="row">
+        <!-- Carte Clients -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card shadow-lg border-primary">
+                <div class="card-body text-center">
+                    <h5 class="card-title mb-4">📋 Nombre total de clients</h5>
+                    <p class="display-4 text-primary"><strong><?= $totalClients ?></strong></p>
+                    <a href="?action=clients" class="btn btn-primary w-100">Voir les clients</a>
+                </div>
+            </div>
+        </div>
 
+        <!-- Carte Comptes -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card shadow-lg border-success">
+                <div class="card-body text-center">
+                    <h5 class="card-title mb-4">📊 Nombre total de comptes ouverts</h5>
+                    <p class="display-4 text-success"><strong><?= $totalComptes ?></strong></p>
+                    <a href="?action=comptes" class="btn btn-success w-100">Voir les comptes</a>
+                </div>
+            </div>
+        </div>
 
-
-
-
+        <!-- Carte Contrats -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card shadow-lg border-warning">
+                <div class="card-body text-center">
+                    <h5 class="card-title mb-4">🔗 Nombre total de contrats souscrits</h5>
+                    <p class="display-4 text-warning"><strong><?= $totalContrats ?></strong></p>
+                    <a href="?action=contrat" class="btn btn-warning w-100">Voir les contrats</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-
-

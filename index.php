@@ -3,10 +3,13 @@ session_start();
 require_once __DIR__ . '/controllers/AuthController.php';
 require_once __DIR__ . '/controllers/ClientController.php';
 require_once __DIR__ . '/controllers/CompteController.php';
+require_once __DIR__ . '/controllers/ContratController.php';
 
 $authController = new AuthController();
 $clientController = new ClientController();
 $compteController = new CompteController();
+$contratController = new ContratController();
+
 
 $action = $_GET['action'] ?? 'login'; // Action par défaut : 'login'
 
@@ -84,6 +87,22 @@ switch ($action) {
     case 'updateCompte':
         $compteController->updateCompte();  // Mettre à jour les informations du compte
         break;
+
+      // Gestion des contrat
+
+      case 'contrat':
+        $contratController->show();
+        break;
+
+
+        case 'editContrat':
+            if (isset($_GET['id'])) {
+                $contratController->editContrat((int)$_GET['id']);  // Afficher le formulaire pour modifier un contrat
+            }
+            break;
+        case 'updateContrat':
+            $contratController->updateContrat();  // Mettre à jour les informations du contrat
+            break;
 
     default:
         echo "Action inconnue";

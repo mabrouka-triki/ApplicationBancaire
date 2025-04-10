@@ -30,6 +30,8 @@ class CompteController {
     $compte = $this->compteRepository->getCompteById($id);
     require_once __DIR__ . '/../views/Compte/VoirCompte.php';
     }
+
+
     // Affichage du formulaire pour ajouter un compte
     public function addCompte() {
         // Récupérer tous les clients existants pour les afficher dans le formulaire
@@ -116,30 +118,28 @@ public function updateCompte()
     header('Location: ?action=comptes');
     exit;
 }
-
+  
     
-    public function deleteCompte() {
-        if (isset($_GET['id'])) {
-            $id = (int) $_GET['id']; // Récupérer l'ID du compte à supprimer
-    
-            // Appel à la méthode de suppression du repository
-            $success = $this->compteRepository->delete($id);
-    
-            if ($success) {
-                $_SESSION['success'] = "Compte supprimé avec succès.";
-            } else {
-                $_SESSION['error'] = "Une erreur est survenue lors de la suppression du compte.";
-            }
-    
-            // Rediriger vers la page des comptes après la suppression
-            header('Location: ?action=comptes');
-            exit;
-        } else {
-            $_SESSION['error'] = "Aucun compte à supprimer.";
-            header('Location: ?action=comptes');
-            exit;
-        }
+   
+public function delete(int $clientId)
+{
+    // Supprimer les comptes et contrats associés (si existants) avant de supprimer le client
+    if ($this->hasAssociatedAccountsOrContracts($clientId)) {
+        $this->deleteAssociatedData($clientId);
     }
+
+    // Supprimer le client
+    if ($this->clientRepository->delete($clientId)) {
+        $_SESSION['success'] = 'Client et ses données associées supprimés avec succès.';
+    } else {
+        $_SESSION['error'] = 'Une erreur s\'est produite lors de la suppression du client.';
+    }
+
+    header('Location: ?action=clients');
+    exit;
+}
+
+
     
 
 }
