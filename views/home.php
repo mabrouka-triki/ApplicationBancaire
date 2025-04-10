@@ -5,8 +5,8 @@
     <p class="text-center">Bienvenue, <?= htmlspecialchars($_SESSION['user_name'], ENT_QUOTES, 'UTF-8') ?></p>
   
     <div class="row">
-        <!-- Carte Clients -->
-        <div class="col-lg-4 col-md-6 mb-4">
+
+    <div class="col-lg-4 col-md-6 mb-4">
             <div class="card shadow-lg border-primary">
                 <div class="card-body text-center">
                     <h5 class="card-title mb-4">📋 Nombre total de clients</h5>
@@ -16,7 +16,6 @@
             </div>
         </div>
 
-        <!-- Carte Comptes -->
         <div class="col-lg-4 col-md-6 mb-4">
             <div class="card shadow-lg border-success">
                 <div class="card-body text-center">
@@ -27,7 +26,6 @@
             </div>
         </div>
 
-        <!-- Carte Contrats -->
         <div class="col-lg-4 col-md-6 mb-4">
             <div class="card shadow-lg border-warning">
                 <div class="card-body text-center">
