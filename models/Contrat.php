@@ -5,8 +5,11 @@ class Contrat
     private int $id;
     private string $type;
     private float $montant;
-    private string $duree;
+    private int $duree;
     private int $idClient;
+
+    private string $nom;
+    private string $prenom;
 
     // Getters
     public function getId(): int
@@ -24,7 +27,7 @@ class Contrat
         return $this->montant;
     }
 
-    public function getDuree(): string
+    public function getDuree(): int
     {
         return $this->duree;
     }
@@ -32,6 +35,16 @@ class Contrat
     public function getIdClient(): int
     {
         return $this->idClient;
+    }
+
+    public function getNom(): string
+    {
+        return $this->nom;
+    }
+
+    public function getPrenom(): string
+    {
+        return $this->prenom;
     }
 
     // Setters
@@ -50,14 +63,23 @@ class Contrat
         $this->montant = $montant;
     }
 
-    public function setDuree(string $duree): void
+    public function setDuree(int $duree): void
     {
-        $this->duree = htmlspecialchars($duree);
+        $this->duree = $duree;
     }
 
     public function setIdClient(int $idClient): void
     {
         $this->idClient = $idClient;
     }
-}
 
+    public function setNom(string $nom): void
+    {
+        $this->nom = $nom;
+    }
+
+    public function setPrenom(string $prenom): void
+    {
+        $this->prenom = $prenom;
+    }
+}

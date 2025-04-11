@@ -2,7 +2,7 @@
 
 <h2>Modifier un Compte</h2>
 
-<form action="?action=updateCompte" method="POST">
+<form action="?action=updateContrat" method="POST">
     <input type="hidden" name="id_compte" value="<?= $compte->getId(); ?>">
 
     <div class="mb-3">

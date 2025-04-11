@@ -18,54 +18,118 @@ class ContratController
     {
         $contrats = $this->contratRepository->getAllContrats();
         require_once __DIR__ . '/../views/Contrat/ContratList.php';
-
     }
 
     // Détails d'un contrat
     public function showContrat(int $id)
     {
-        $contrat = $this->contratRepository->getContrat($id);
+        $contrat = $this->contratRepository->getContratById($id);
+        if (!$contrat) {
+            $_SESSION['error'] = "Contrat introuvable.";
+            header('Location: ?action=contrats');
+            exit;
+        }
         require_once __DIR__ . '/../views/Contrat/voirContrat.php';
     }
 
+    // Afficher le formulaire pour ajouter un contrat
+    public function addContrat()
+    {
+        $clients = $this->clientRepository->getAllClients();
+        require_once __DIR__ . '/../views/Contrat/addContrat.php';
+    }
 
-      // Afficher le formulaire de modification d'un contrat
-      public function editContrat(int $id)
-      {
-          // Récupérer le contrat existant
-          $contrat = $this->contratRepository->getContrat($id);
-          
-          // Afficher le formulaire avec les données du contrat
-          require_once __DIR__ . '/../views/Contrat/updateContrat.php'; 
-      }
+    // Enregistrer un nouveau contrat
+    public function storeContrat()
+    {
+        if (!isset($_POST['type_contrat'], $_POST['montant_souscription_contrat'], $_POST['duree_contrat'], $_POST['id_client'])) {
+            $_SESSION['error'] = "Tous les champs sont obligatoires.";
+            header('Location: ?action=addContrat');
+            exit;
+        }
 
-         // Mettre à jour les informations du contrat
+        $type = $_POST['type_contrat'];
+        $montant = $_POST['montant_souscription_contrat'];
+        $duree = $_POST['duree_contrat'];
+        $idClient = $_POST['id_client'];
+
+        if ($montant < 0 || !is_numeric($montant)) {
+            $_SESSION['error'] = "Le montant ne peut pas être négatif ou invalide.";
+            header('Location: ?action=addContrat');
+            exit;
+        }
+
+        if (!is_numeric($duree) || $duree < 0) {
+            $_SESSION['error'] = "La durée doit être un nombre valide.";
+            header('Location: ?action=addContrat');
+            exit;
+        }
+
+        $contrat = new Contrat();
+        $contrat->setType($type);
+        $contrat->setMontant($montant);
+        $contrat->setDuree($duree);
+        $contrat->setIdClient($idClient);
+
+        $this->contratRepository->saveContrat($contrat);
+
+        $_SESSION['success'] = "Contrat ajouté avec succès.";
+        header('Location: ?action=contrats');
+        exit;
+    }
+
+    // Afficher le formulaire pour modifier un contrat
+    public function editContrat(int $id)
+    {
+        // Vérifier si le contrat existe
+        $contrat = $this->contratRepository->getContratById($id);
+        
+        if (!$contrat) {
+            $_SESSION['error'] = "Contrat introuvable.";
+            header('Location: ?action=contrat');
+            exit;
+        }
+    
+        require_once __DIR__ . '/../views/Contrat/updateContrat.php';
+    }
+    
+
+    // Mettre à jour un contrat
     public function updateContrat()
     {
-        if (isset($_POST['id_contrat'], $_POST['montant_contrat'], $_POST['duree_contrat'])) {
-            $id = $_POST['id_contrat'];
-            $montant = $_POST['montant_contrat'];
-            $duree = $_POST['duree_contrat'];
+        $id = $_POST['id_contrat'] ?? null;
+        $type = $_POST['type_contrat'] ?? '';
+        $montant = $_POST['montant_souscription_contrat'] ?? null;
+        $duree = $_POST['duree_contrat'] ?? null;
 
-            // Créer une instance du contrat et définir ses propriétés
+        if ($id && $type !== '' && $montant !== null && $duree !== null) {
             $contrat = new Contrat();
             $contrat->setId($id);
+            $contrat->setType($type);
             $contrat->setMontant($montant);
             $contrat->setDuree($duree);
 
-            // Sauvegarder les changements en base de données
             $this->contratRepository->update($contrat);
 
-            $_SESSION['success'] = "Le contrat a été mis à jour avec succès.";
-            header('Location: ?action=contrats'); // Redirection vers la liste des contrats
-            exit();
+            $_SESSION['success'] = "Contrat modifié avec succès.";
         } else {
-            $_SESSION['error'] = "Les informations sont invalides.";
-            header('Location: ?action=editContrat&id=' . $_POST['id_contrat']);  
-            exit();
+            $_SESSION['error'] = "Tous les champs sont obligatoires.";
         }
+
+        header('Location: ?action=contrats');
+        exit;
     }
 
-}
+    // Supprimer un contrat
+    public function deleteContrat(int $id)
+    {
+        if ($this->contratRepository->delete($id)) {
+            $_SESSION['success'] = "Contrat supprimé avec succès.";
+        } else {
+            $_SESSION['error'] = "Une erreur s'est produite lors de la suppression du contrat.";
+        }
 
-    
+        header('Location: ?action=contrat');
+        exit;
+    }
+}

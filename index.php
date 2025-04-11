@@ -1,4 +1,8 @@
+
+
 <?php
+// echo password_hash('Mabrouka', PASSWORD_DEFAULT);
+
 session_start();
 require_once __DIR__ . '/controllers/AuthController.php';
 require_once __DIR__ . '/controllers/ClientController.php';
@@ -68,10 +72,12 @@ switch ($action) {
     case 'addCompte':
         $compteController->addCompte();  // Afficher le formulaire pour ajouter un compte
         break;
+
         case 'detailCompte':
             if (isset($_GET['id'])) {
                 $compteController->showCompte((int)$_GET['id']);
             }
+
             break;
     case 'storeCompte':
         $compteController->storeCompte();  // Enregistrer le compte après soumission du formulaire
@@ -85,7 +91,7 @@ switch ($action) {
         }
         break;
     case 'updateCompte':
-        $compteController->updateCompte();  // Mettre à jour les informations du compte
+        $compteController->updateCompte();  
         break;
 
       // Gestion des contrat
@@ -98,11 +104,18 @@ switch ($action) {
         case 'editContrat':
             if (isset($_GET['id'])) {
                 $contratController->editContrat((int)$_GET['id']);  // Afficher le formulaire pour modifier un contrat
+            
             }
             break;
-        case 'updateContrat':
-            $contratController->updateContrat();  // Mettre à jour les informations du contrat
-            break;
+        
+            case 'updateContrat':
+                $id = $_GET['id'] ?? null;  // Récupérer l'ID passé en paramètre
+                if ($id) {
+                    $contratController->editContrat($id);  //
+                } else {
+                    echo "ID du contrat manquant.";
+                }
+                break;
 
     default:
         echo "Action inconnue";
